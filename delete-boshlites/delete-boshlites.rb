@@ -1,11 +1,4 @@
-#!/var/vcap/packages/ruby-2.0.0-p481/2.0.0-p481/bin/ruby
-
-begin
-  Gem.install 'aws-sdk'
-rescue Gem::InstallError
-end
-
-require 'aws-sdk'
+require 'aws-sdk-v1'
 require 'logger'
 
 def env_variables_set(env)
@@ -13,7 +6,7 @@ def env_variables_set(env)
 end
 
 def script_environment
-  current_environment = ('docker' if File.exists? '/.dockerenv') || ('agent' if Dir.exists? '/var/vcap/jobs/gocd-agent/') || 'other'
+  ('docker' if File.exists? '/.dockerenv') || ('agent' if Dir.exists? '/var/vcap/jobs/gocd-agent/') || 'other'
 end
 
 def error_message
@@ -40,11 +33,12 @@ if env_variables_set(env)
     :secret_access_key => env.fetch('BOSH_AWS_SECRET_ACCESS_KEY'))
 
   collection = ec2.instances.with_tag('reapable', 'true').with_tag('PipelineName', env.fetch('GO_PIPELINE_NAME'))
-
   collection.each do |instance|
     if instance.status == :running && Time.now - instance.launch_time > lifespan
-      logger.info("Terminating instance #{instance.id}")
+      logger.info("Terminating instance #{instance.id}, launched at #{instance.launch_time}")
       instance.terminate
+    else
+      logger.info("Skipping instance #{instance.id}, launched at #{instance.launch_time}")
     end
   end
 else
