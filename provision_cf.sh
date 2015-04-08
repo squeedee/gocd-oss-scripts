@@ -7,10 +7,7 @@ STEMCELL_FILE=latest-bosh-stemcell-warden.tgz
 WORKSPACE_DIR="$(cd $(dirname ${BASH_SOURCE[0]})/../ && pwd)"
 BOSH_LITE_DIR="${WORKSPACE_DIR}/bosh-lite"
 CF_DIR="${WORKSPACE_DIR}/cf-release"
-cd $BOSH_LITE_DIR
-chruby 2.1.2
-BOSH_LITE_IP=`cat api-address`
-cd -
+BOSH_LITE_IP=`cat $BOSH_LITE_DIR/api-address`
 chruby 1.9.3
 echo $BOSH_LITE_IP
 
