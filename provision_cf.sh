@@ -59,7 +59,7 @@ meta:
 name: $DEPLOYMENT_NAME
 DEPLOYMENT_NAME_STUB
 
-  bosh-lite/make_manifest $SYSTEM_DOMAIN_STUB $DEPLOYMENT_NAME_STUB
+  scripts/generate-bosh-lite-dev-manifest $SYSTEM_DOMAIN_STUB $DEPLOYMENT_NAME_STUB
   cat bosh-lite/manifests/cf-manifest.yml
 }
 
