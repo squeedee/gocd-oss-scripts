@@ -38,7 +38,7 @@ build_manifest() {
   env
   cd $CF_DIR
   git checkout v$LATEST_CF_FINAL_RELEASE
-  ./update
+  ./scripts/update
 
   export CF_RELEASE_DIR=$CF_DIR
   mkdir -p bosh-lite/manifests
